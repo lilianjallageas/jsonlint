@@ -20,9 +20,12 @@ new Vue({
 	methods: {
 
 		lint: function() {
-			// this.outputString = jsonlint.lint(this.inputString);
 			var parsedObject = jsonlint.parse(this.inputString);
 			this.outputString = jsonlint.toString(parsedObject,0);
+		},
+
+		clearOutput: function() {
+			this.outputString = "";
 		},
 
 	}

@@ -21,23 +21,28 @@ var jsonlint = (function() {
 		toString: function(object, level) {
 
 			var spacing = "    ";
-			var outputString = Array.isArray(object) ? "[\n" : "{\n";
+			var isArray = Array.isArray(object);
+			var outputString = isArray ? '[' : '{\n';
 
 			for (var property in object) {
 				if (object.hasOwnProperty(property)) {
-					outputString += spacing.repeat(level+1) + property + ": ";
-					if (typeof object[property] === 'object') {
-						// Calling the 'toString' function for nested objects
+					if (isArray) {
 						outputString += jsonlint.toString(object[property], level+1);
 					} else {
-						// Outputting the native types
-						outputString += object[property];
+						outputString += spacing.repeat(level+1) + '"' + property + '"' + ': ';
+						if (typeof object[property] === 'object') {
+							// Calling the 'toString' function for nested objects
+							outputString += jsonlint.toString(object[property], level+1);
+						} else {
+							// Outputting the native types
+							outputString += '"' + object[property]; + '"';
+						};
+						outputString += '",\n';
 					};
-					outputString += "\n";
 				}
 			}
 
-			outputString += Array.isArray(object) ? spacing.repeat(level) + "]" : spacing.repeat(level) + "}";
+			outputString += Array.isArray(object) ? spacing.repeat(level) + ']' : spacing.repeat(level) + '}';
 			return outputString;
 		},
 
