@@ -5,54 +5,87 @@
  */
 var jsonlint = (function() {
 
+	var spacing = "    ";
+
+
+	// ---------------------------
+	// Utility Functions
+	// ---------------------------
+
+	// Function: "printObject"
+	// ---------------------------
 	var printObject = function(object, level){
+		if (object === null) { return "null"; };
+		var outputString = '{';
+		var keys = Object.getOwnPropertyNames(object);
+		for (var i = 0; i < keys.length; i++) { 
+			var property = keys[i];
+			var value = object[keys[i]]
+			outputString += '\n' + spacing.repeat(level+1) + '"' + property + '"' + ': ';
+			if (typeof value === 'object') {
+				if (Array.isArray(value)) { 
+					outputString += printArray(value, level+1); // Calling the nested function for the Array
+				} else { 
+					outputString += printObject(value, level+1); // Calling the nested function for the Object
+				};
+			} else {
+				// Outputting the native type
+				outputString += '"' + object[property] + '"';
+			};
+			//Adding a comma "," between each properties, except for the last one
+			if (i != keys.length-1) { outputString += "," } else { outputString += "\n" };
+		}
+		outputString += spacing.repeat(level) + '}';
+		return outputString;
+	};
 
-	}
-
+	// Function: "printArray"
+	// ---------------------------
 	var printArray = function(array, level){
+		if(array.length == 0) { return "[]" };
+		var outputString = '[';
+		for (var i = 0; i < array.length; i++) { 
+			var elem = array[i];
+			if (typeof elem === 'object') {
+				if (Array.isArray(elem)) { 
+					// Calling the nested function for the Array
+					outputString += printArray(elem, level+1);
+				} else { 
+					// Calling the nested function for the Object
+					outputString += printObject(elem, level); 
+				};
+			} else {
+				// Outputting the native type
+				outputString += '"' + elem + '"';
+			};
+			//Adding a comma "," between each elements of the arrays, except for the last one
+			if (i != array.length-1) { outputString += "," };
+		}
+		outputString += ']';
+		return outputString;
+	};
 
-	}
 
-
+	// ---------------------------
+	// Library API
+	// ---------------------------
 	return {
 
+		// API: "parse"
 		// ---------------------------
-		// Utility Functions
-		// ----------------------------
-
-		lint: function(inputString) {
-			return inputString;
-		},
-
 		parse: function(inputString) {
 			return JSON.parse(inputString);
 		},
 
-		toString: function(object, level) {
-
-			var spacing = "    ";
-			var isArray = Array.isArray(object);
-			var outputString = isArray ? '[' : '{\n';
-
-			for (var property in object) {
-				if (object.hasOwnProperty(property)) {
-					if (isArray) {
-						outputString += jsonlint.toString(object[property], level+1);
-					} else {
-						outputString += spacing.repeat(level+1) + '"' + property + '"' + ': ';
-						if (typeof object[property] === 'object') {
-							// Calling the 'toString' function for nested objects
-							outputString += jsonlint.toString(object[property], level+1);
-						} else {
-							// Outputting the native types
-							outputString += '"' + object[property]; + '"';
-						};
-						outputString += '",\n';
-					};
-				}
-			}
-
-			outputString += Array.isArray(object) ? spacing.repeat(level) + ']' : spacing.repeat(level) + '}';
+		// API: "toString"
+		// ---------------------------
+		toString: function(object) {
+			var outputString = '';
+			if (Array.isArray(object)) { 
+				outputString += printArray(object, 0);
+			} else { 
+				outputString += printObject(object, 0);
+			};
 			return outputString;
 		},
 

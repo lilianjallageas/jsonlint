@@ -21,7 +21,7 @@ new Vue({
 
 		lint: function() {
 			var parsedObject = jsonlint.parse(this.inputString);
-			this.outputString = jsonlint.toString(parsedObject,0);
+			this.outputString = jsonlint.toString(parsedObject);
 		},
 
 		clearOutput: function() {
