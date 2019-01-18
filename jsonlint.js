@@ -29,8 +29,10 @@ var jsonlint = (function() {
 					outputString += printObject(value, level+1); // Calling the nested function for the Object
 				};
 			} else {
-				// Outputting the native type
-				outputString += '"' + object[property] + '"';
+				// Outputting the native type (only putting quotes on strings)
+				if (typeof object[property] == 'string') { outputString += '"' + object[property] + '"'; } 
+				else { outputString += object[property]; }
+				
 			};
 			//Adding a comma "," between each properties, except for the last one
 			if (i != keys.length-1) { outputString += "," } else { outputString += "\n" };
