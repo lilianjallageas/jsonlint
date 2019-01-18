@@ -5,7 +5,17 @@
  */
 var jsonlint = (function() {
 
+	var printObject = function(object, level){
+
+	}
+
+	var printArray = function(array, level){
+
+	}
+
+
 	return {
+
 		// ---------------------------
 		// Utility Functions
 		// ----------------------------
