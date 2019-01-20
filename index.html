@@ -32,7 +32,7 @@
 				<div class="panel-body">
 					<form>
 						<div class="form-group">
-							<textarea v-model="inputString" class="form-control" rows="30"></textarea>
+							<textarea v-model="inputString" class="form-control" rows="25"></textarea>
 						</div>
 						<div class="form-group">
 							<button @click="lint()" type="button" class="btn btn-primary pull-right">
@@ -54,9 +54,13 @@
 				<div class="panel-body">
 					<form>
 						<div class="form-group">
-							<textarea v-model="outputString" class="form-control" rows="30"></textarea>
+							<textarea v-model="outputString" class="form-control" rows="25" id="outputString"></textarea>
 						</div>
 						<div class="form-group">
+							<button @click="copyToClipboard()" type="button" class="btn btn-primary">
+								<span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+								Copy
+							</button>
 							<button @click="clearOutput()" type="button" class="btn btn-danger pull-right">
 								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 								Clear

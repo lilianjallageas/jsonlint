@@ -28,6 +28,12 @@ new Vue({
 			this.outputString = "";
 		},
 
+		copyToClipboard: function() {
+			var copyText = document.getElementById("outputString"); // Get the text field
+			copyText.select(); // Select the text field
+			document.execCommand("copy"); // Copy the text inside the text field
+		}
+
 	}
 
 });
