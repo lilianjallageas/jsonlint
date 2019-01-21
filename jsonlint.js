@@ -5,8 +5,7 @@
  */
 var jsonlint = (function() {
 
-	var spacing = "    ";
-
+	var spacing = "";
 
 	// ---------------------------
 	// Utility Functions
@@ -80,8 +79,15 @@ var jsonlint = (function() {
 		},
 
 		// API: "toString"
+		// @param "object": Any javascript object
+		// @param "space": Spaces or tabs
 		// ---------------------------
-		toString: function(object) {
+		toString: function(object, space) {
+			// Checking the parameters
+			if (!object) { return "Please provide a valid javascript object." };
+			if (!space) { return "Please provide a spacing."; } else { spacing = space; };
+
+			// Printing the javascript object into the JSON format
 			var outputString = '';
 			if (Array.isArray(object)) { 
 				outputString += printArray(object, 0);
