@@ -24,8 +24,8 @@ new Vue({
 			this.outputString = jsonlint.toString(parsedObject);
 		},
 
-		clearOutput: function() {
-			this.outputString = "";
+		clearString: function(element) {
+			this[element] = "";
 		},
 
 		copyToClipboard: function() {
