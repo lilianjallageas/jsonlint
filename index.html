@@ -1,85 +1,46 @@
-<!-- index.html -->
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8"/>
 	<title>JSON Lint</title>
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<!-- CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="app.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
+
 <body>
-
-	<!-- Navigation Bar -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<a class="navbar-brand">JSON Lint</a>
-		</div>
-	</nav>
-
-	<!-- Main body of our application -->
-	<div class="container" id="app_jsonlint">
-
-		<!-- Input -->
-		<div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Input</h3>
-				</div>
-				<div class="panel-body">
-					<form>
-						<div class="form-group">
-							<textarea v-model="inputString" class="form-control" rows="25"></textarea>
-						</div>
-						<div class="form-group">
-							<button @click="clearString('inputString')" type="button" class="btn btn-danger">
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Clear
-							</button>
-							<button @click="lint()" type="button" class="btn btn-primary pull-right">
-								Lint JSON
-								<span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-
-		<!-- Ouptput -->
-		<div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Output</h3>
-				</div>
-				<div class="panel-body">
-					<form>
-						<div class="form-group">
-							<textarea v-model="outputString" class="form-control" rows="25" id="outputString"></textarea>
-						</div>
-						<div class="form-group">
-							<button @click="copyToClipboard()" type="button" class="btn btn-primary">
-								<span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
-								Copy
-							</button>
-							<button @click="clearString('outputString')" type="button" class="btn btn-danger pull-right">
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Clear
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-
+	<div id="app_jsonlint">
+		<v-app dark>
+			<v-toolbar>
+				<v-toolbar-title>JSON Lint</v-toolbar-title>
+			</v-toolbar>
+			<v-container grid-list-md text-xs-center>
+			<v-layout row wrap>
+				<v-flex xs6>
+					<v-textarea solo outline rows="25"></v-textarea>
+					<v-btn color="error">Clear<v-icon right dark>delete</v-icon></v-btn>
+					<v-btn color="info">Lint<v-icon right dark>offline_bolt</v-icon></v-btn>
+				</v-flex>
+				<v-flex xs6>
+					<v-textarea solo outline rows="25"></v-textarea>
+					<v-btn color="error">Clear<v-icon right dark>delete</v-icon></v-btn>
+					<v-btn color="info">Copy<v-icon right dark>file_copy</v-icon></v-btn>
+				</v-flex>
+			</v-layout>
+			</v-container>
+		</v-app>
 	</div>
 
 	<!-- Javascript -->
-	<script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
-	<script src="https://unpkg.com/vue@2.3.3"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
 	<script src="./jsonlint.js"></script>
 	<script src="app.js"></script>
+
 </body>
+
+</html>
