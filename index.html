@@ -15,22 +15,41 @@
 <body>
 	<div id="app_jsonlint">
 		<v-app dark>
+
+			<!-- ToolBar -->
 			<v-toolbar>
 				<v-toolbar-title>JSON Lint</v-toolbar-title>
 			</v-toolbar>
+
+			<!-- Main -->
 			<v-container grid-list-md text-xs-center>
-			<v-layout row wrap>
-				<v-flex xs6>
-					<v-textarea solo outline rows="25"></v-textarea>
-					<v-btn color="error">Clear<v-icon right dark>delete</v-icon></v-btn>
-					<v-btn color="info">Lint<v-icon right dark>offline_bolt</v-icon></v-btn>
-				</v-flex>
-				<v-flex xs6>
-					<v-textarea solo outline rows="25"></v-textarea>
-					<v-btn color="error">Clear<v-icon right dark>delete</v-icon></v-btn>
-					<v-btn color="info">Copy<v-icon right dark>file_copy</v-icon></v-btn>
-				</v-flex>
-			</v-layout>
+				<v-layout row wrap>
+
+					<!-- Input -->
+					<v-flex xs6>
+						<div class="headline font-weight-bold">Input</div>
+						<v-textarea solo outline v-model="inputString" rows="25"></v-textarea>
+						<v-btn color="error" @click="clearString('inputString')">
+							Clear<v-icon right dark>delete</v-icon>
+						</v-btn>
+						<v-btn color="info" @click="lint()">
+							Lint<v-icon right dark>offline_bolt</v-icon>
+						</v-btn>
+					</v-flex>
+
+					<!-- Output -->
+					<v-flex xs6>
+						<div class="headline font-weight-bold">Output</div>
+						<v-textarea solo outline v-model="outputString" rows="25" id="outputString"></v-textarea>
+						<v-btn color="info" @click="copyToClipboard()">
+							Copy<v-icon right dark>file_copy</v-icon>
+						</v-btn>
+						<v-btn color="error" @click="clearString('outputString')">
+							Clear<v-icon right dark>delete</v-icon>
+						</v-btn>
+					</v-flex>
+
+				</v-layout>
 			</v-container>
 		</v-app>
 	</div>
