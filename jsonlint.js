@@ -80,12 +80,12 @@ var jsonlint = (function() {
 
 		// API: "toString"
 		// @param "object": Any javascript object
-		// @param "space": Spaces or tabs
+		// @param "indentation": Spaces or tabs
 		// ---------------------------
-		toString: function(object, space) {
+		toString: function(object, indentation) {
 			// Checking the parameters
 			if (!object) { return "Please provide a valid javascript object." };
-			if (!space) { return "Please provide a spacing."; } else { spacing = space; };
+			if (!indentation) { return "Please indentation."; } else { spacing = indentation; };
 
 			// Printing the javascript object into the JSON format
 			var outputString = '';

@@ -32,8 +32,12 @@
 						<v-btn color="error" @click="clearString('inputString')">
 							Clear<v-icon right dark>delete</v-icon>
 						</v-btn>
+						<v-btn-toggle v-model="indentation">
+							<v-btn flat value="    ">Spaces</v-btn>
+							<v-btn flat value="	">Tabs</v-btn>
+						</v-btn-toggle>
 						<v-btn color="info" @click="lint()">
-							Lint<v-icon right dark>offline_bolt</v-icon>
+							Lint<v-icon right dark>chevron_right</v-icon>
 						</v-btn>
 					</v-flex>
 
