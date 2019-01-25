@@ -8,7 +8,7 @@ var jsonparse = (function() {
 	// ---------------------------
 	// Utility Functions
 	// ---------------------------
-	var at = 0;
+	var at = -1;
 
 
 	// Function: "detectValue"
@@ -39,12 +39,11 @@ var jsonparse = (function() {
 	// Function: "exploreObject"
 	// ---------------------------
 	var exploreObject = function(str){
-		if (str[at] != '{') { throw "ParseError: Missing the '{' at the beginning of the object. (found '"+str[at]+"' instead)"; }; 
 		at++;
+		if (str[at] != '{') { throw "ParseError: Missing the '{' at the beginning of the object. (found '"+str[at]+"' instead)"; }; 
 		exploreString(str);
 		if (str[at] != ':') { throw "ParseError: Missing ':' between the key and the value of the object."; };
 		var value = detectValue(str, at);
-		at++;
 		exploreValue[value](str);
 		if (str[at] != '}') { throw "ParseError: Missing the '}' at the end of the object."; };
 		at++;
@@ -53,8 +52,9 @@ var jsonparse = (function() {
 	// Function: "exploreString"
 	// ---------------------------
 	var exploreString = function(str){
+		at++;
 		if (str[at] != '"') { throw "ParseError: Missing the '\"' at the beginning of the string."; }
-		at++; // We assume that the first character of the string is '"'
+		at++;
 		do { at++; } while (str[at] != '"')
 		at++;
 	};
@@ -76,7 +76,7 @@ var jsonparse = (function() {
 		// ---------------------------
 		parse: function(inputString) {
 			console.log("<<<================================");
-			at = 0;
+			at = -1;
 			try{
 				explore(inputString);
 			} catch(error){
