@@ -57,11 +57,39 @@ var jsonparse = (function() {
 		at++;
 	};
 
+	// Function: "exploreArray"
+	// ---------------------------
+	var exploreArray = function(str){
+		// TODO
+	};
+
+	// Function: "exploreNumber"
+	// ---------------------------
+	var exploreNumber = function(str){
+		// TODO
+	};
+
+	// Function: "exploreBoolean"
+	// ---------------------------
+	var exploreBoolean = function(str){
+		// TODO
+	};
+
+	// Function: "exploreNull"
+	// ---------------------------
+	var exploreNull = function(str){
+		// TODO
+	};
+
 	// Function: "exploreValue"
 	// ---------------------------
 	var exploreValue = {
 		'object': exploreObject,
+		'array': exploreArray,
 		'string': exploreString,
+		'number': exploreNumber,
+		'boolean': exploreBoolean,
+		'null': exploreNull,
 	};
 
 
