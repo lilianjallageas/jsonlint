@@ -11,9 +11,9 @@ var jsonparse = (function() {
 	var at = -1;
 
 
-	// Function: "detectValue"
+	// Function: "detectNextValue"
 	// ---------------------------
-	var detectValue = function(str, index){
+	var detectNextValue = function(str, index){
 		switch(str[index+1]) {
 			case '{': return 'object'; break;
 			case '[': return 'array'; break;
@@ -27,8 +27,7 @@ var jsonparse = (function() {
 	// Function: "explore"
 	// ---------------------------
 	var explore = function(str){
-		var value = detectValue(str, -1);
-		exploreValue[value](str);
+		exploreValue[detectNextValue(str, at)](str);
 		if (at == str.length) {
 			console.log("We parsed the JSON string without errors: " + str);
 		} else {
@@ -43,8 +42,7 @@ var jsonparse = (function() {
 		if (str[at] != '{') { throw "ParseError: Missing the '{' at the beginning of the object. (found '"+str[at]+"' instead)"; }; 
 		exploreString(str);
 		if (str[at] != ':') { throw "ParseError: Missing ':' between the key and the value of the object."; };
-		var value = detectValue(str, at);
-		exploreValue[value](str);
+		exploreValue[detectNextValue(str, at)](str);
 		if (str[at] != '}') { throw "ParseError: Missing the '}' at the end of the object."; };
 		at++;
 	};
