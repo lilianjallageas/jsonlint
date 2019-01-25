@@ -15,12 +15,6 @@ new Vue({
 		indentation: "    ",
 	},
 
-	// Mounted
-	// ===========
-	mounted:function(){
-		console.log(jsonparse.parse('"test"')); // Test of 'string'
-		console.log(jsonparse.parse('{"test":"test"}')); // Test of object with a string as the value
-	},
 
 	// Vue Methods
 	// ===========
