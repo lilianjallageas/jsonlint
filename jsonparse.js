@@ -38,17 +38,6 @@ var jsonparse = (function() {
 		}
 	};
 
-	// Function: "explore"
-	// ---------------------------
-	var explore = function(){
-		exploreValue[detectNextValue(str, at)](str);
-		if (at == str.length) {
-			console.log("Successfully parsed the JSON string: " + str);
-		} else {
-			console.log("ERROR: Something went wrong during the parsing of the JSON string: " + str);
-		};
-	};
-
 	// Function: "exploreObject"
 	// ---------------------------
 	var exploreObject = function(){
@@ -77,7 +66,14 @@ var jsonparse = (function() {
 	// Function: "exploreArray"
 	// ---------------------------
 	var exploreArray = function(){
-		// TODO
+		next();
+		if (str[at] != '[') { throw "ParseError: Missing the '[' at the beginning of the array. (found '"+str[at]+"' instead)"; };
+		// Looping though the values of the array
+		do {
+			exploreValue[detectNextValue(str, at)](str);
+		} while (str[at] == ',')
+		if (str[at] != ']') { throw "ParseError: Missing the ']' at the end of the array."; };
+		next();
 	};
 
 	// Function: "exploreNumber"
@@ -89,7 +85,7 @@ var jsonparse = (function() {
 	// Function: "exploreBoolean"
 	// ---------------------------
 	var exploreBoolean = function(){
-		next();	
+		next();
 		switch(str[at]) {
 			case 't':
 				if (str.slice(at, at+4) == 'true') { next(4); } 
@@ -100,14 +96,16 @@ var jsonparse = (function() {
 				else { throw "ParseError: '"+str.slice(at, at+5)+"' is not a valid boolean."; };
 				break;
 			default:
-				 throw "ParseError: Booleans only start with 't' or 'f'.";
+				throw "ParseError: Booleans only start with 't' or 'f'.";
 		}
 	};
 
 	// Function: "exploreNull"
 	// ---------------------------
 	var exploreNull = function(){
-		// TODO
+		next();
+		if (str.slice(at, at+4) == 'null') { next(4); }
+		else { throw "ParseError: '"+str.slice(at, at+4)+"' should be 'null'."; };
 	};
 
 	// Function: "exploreValue"
@@ -134,7 +132,9 @@ var jsonparse = (function() {
 			at = -1;
 			str = inputString;
 			try{
-				explore(inputString);
+				exploreValue[detectNextValue(str, at)](str);
+				if (at == str.length) { console.log("Successfully parsed the JSON string: " + str); } 
+				else { console.log("ERROR: Something went wrong during the parsing of the JSON string: " + str); };
 			} catch(error){
 				console.log(error);
 				console.log("Error during the parsing of the string: " + inputString);
