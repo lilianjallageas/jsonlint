@@ -18,8 +18,11 @@ new Vue({
 	// Mounted
 	// ===========
 	mounted:function(){
+		jsonparse.parse('true'); // Test of 'true'
+		jsonparse.parse('false'); // Test of 'false'
 		jsonparse.parse('"test"'); // Test of 'string'
-		jsonparse.parse('{"test":"test"}'); // Test of object with a string as the value
+		jsonparse.parse('{"test_A":"test_A"}'); // Test of object with a string as the value
+		jsonparse.parse('{"test_A":"test_A","test_B":"test_B"}'); // Test of object with several properties
 	},
 
 	// Vue Methods
