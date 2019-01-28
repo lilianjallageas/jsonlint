@@ -15,6 +15,19 @@ new Vue({
 		indentation: "    ",
 	},
 
+	// Mounted
+	// ===========
+	mounted:function(){
+		jsonparse.parse('null');
+		jsonparse.parse('true');
+		jsonparse.parse('false');
+		jsonparse.parse('"test"');
+		jsonparse.parse('{"test_A":"test_A"}');
+		jsonparse.parse('{"test_A":"test_A","test_B":"test_B"}');
+		jsonparse.parse('["test_A"]');
+		jsonparse.parse('["test_A",{"test_A":"test_A"},null]');
+		jsonparse.parse('[true,false]');
+	},
 
 	// Vue Methods
 	// ===========
