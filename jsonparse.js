@@ -32,6 +32,7 @@ var jsonparse = (function() {
 		else if (nextChar == '"') { return "string"; }
 		else if (nextChar == 't' || nextChar == 'f') { return 'boolean'; }
 		else if (nextChar == 'n') { return 'null'; }
+		else if (nextChar == '-' || ['0','1','2','3','4','5','6','7','8','9'].includes(nextChar)) { return 'number'; }
 		else { 
 			console.log("We didn't detect any value for the character '"+str[at+1]+"'");
 			return 'valueNotDetected'; 
@@ -79,7 +80,14 @@ var jsonparse = (function() {
 	// Function: "exploreNumber"
 	// ---------------------------
 	var exploreNumber = function(){
-		// TODO
+		var index = at;
+		do { index++ } while ((index != str.length-1 && [',', '}', ']'].includes(str[index+1]) == false))
+		if(isNaN(str.slice(at+1,index+1))) {
+			throw "ParseError: This is not a valid number:"+ str.slice(at+1,index+1);
+		} else {
+			at = index;
+			next()
+		}
 	};
 
 	// Function: "exploreBoolean"

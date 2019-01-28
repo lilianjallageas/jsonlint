@@ -18,6 +18,9 @@ new Vue({
 	// Mounted
 	// ===========
 	mounted:function(){
+		jsonparse.parse('1234567890');
+		jsonparse.parse('{"test_number":1234567890}');
+		jsonparse.parse('123e-5');
 		jsonparse.parse('null');
 		jsonparse.parse('true');
 		jsonparse.parse('false');
@@ -27,6 +30,7 @@ new Vue({
 		jsonparse.parse('["test_A"]');
 		jsonparse.parse('["test_A",{"test_A":"test_A"},null]');
 		jsonparse.parse('[true,false]');
+		jsonparse.parse('[{"test_A":"test_A"},123456,null,false,{"array":[1234,"test"]}]');
 	},
 
 	// Vue Methods
