@@ -60,7 +60,10 @@ var jsonparse = (function() {
 		next();
 		if (str[at] != '"') { throw "ParseError: Missing the '\"' at the beginning of the string."; }
 		next();
-		do { at++; } while (str[at] != '"')
+		do {
+			if (['\b','\f','\n','\r','\t','\v','\0','\\','\'','\"'].includes(str.charAt(at))) { throw "ParseError: This character is not allowed in a string: "+str.charAt(at); }
+			else { at++; };
+		} while (str[at] != '"')
 		next();
 	};
 

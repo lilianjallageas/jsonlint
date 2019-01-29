@@ -26,6 +26,7 @@ new Vue({
 		jsonparse.parse('false');
 		jsonparse.parse('"test"');
 		jsonparse.parse('{"test_A":"test_A"}');
+		jsonparse.parse('{"test_A":"te\nst_A"}');
 		jsonparse.parse('{"test_A":"test_A","test_B":"test_B"}');
 		jsonparse.parse('["test_A"]');
 		jsonparse.parse('["test_A",{"test_A":"test_A"},null]');
