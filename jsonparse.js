@@ -10,6 +10,7 @@ var jsonparse = (function() {
 	// ---------------------------
 	var at = -1;
 	var str = "";
+	var skipableChars = [' ','\t','\r','\n'];
 
 
 	// ---------------------------
@@ -23,11 +24,21 @@ var jsonparse = (function() {
 		else { at++; };
 	};
 
+	// Function: "skipChars"
+	// Skips the spaces and carriage returns
+	// ---------------------------
+	var skipChars = function(){
+		while (skipableChars.includes(str.charAt(at))) { 
+			next(); 
+		};
+	};
+
 	// Function: "detectNextValue"
 	// ---------------------------
 	var detectNextValue = function(){
 		var nextChar = str[at+1];
-		if (nextChar == '{') { return 'object'; }
+		if (skipableChars.includes(nextChar)) { next(); return detectNextValue(); }
+		else if (nextChar == '{') { return 'object'; }
 		else if (nextChar == '[') { return 'array'; }
 		else if (nextChar == '"') { return "string"; }
 		else if (nextChar == 't' || nextChar == 'f') { return 'boolean'; }
@@ -43,21 +54,26 @@ var jsonparse = (function() {
 	// ---------------------------
 	var exploreObject = function(){
 		next();
+		skipChars();
 		if (str[at] != '{') { throw "ParseError: Missing the '{' at the beginning of the object. (found '"+str[at]+"' instead)"; };
-		// Looping though the properties of the object
-		do {
-			exploreString(str);
-			if (str[at] != ':') { throw "ParseError: Missing ':' between the key and the value of the object."; };
-			exploreValue[detectNextValue(str, at)](str);
-		} while (str[at] == ',')
-		if (str[at] != '}') { throw "ParseError: Missing the '}' at the end of the object."; };
+		skipChars();
+		if (str[at+1] != '}') { // If the object is not empty...
+			do { // Looping though the properties of the object
+				exploreString(str);
+				if (str[at] != ':') { throw "ParseError: Missing ':' between the key and the value of the object."; };
+				exploreValue[detectNextValue(str, at)](str);
+			} while (str[at] == ',')
+			if (str[at] != '}') { throw "ParseError: Missing the '}' at the end of the object."; };
+		} else { next(); };
 		next();
+		skipChars();
 	};
 
 	// Function: "exploreString"
 	// ---------------------------
 	var exploreString = function(){
 		next();
+		skipChars();
 		if (str[at] != '"') { throw "ParseError: Missing the '\"' at the beginning of the string."; }
 		next();
 		do {
@@ -65,6 +81,7 @@ var jsonparse = (function() {
 			else { at++; };
 		} while (str[at] != '"')
 		next();
+		skipChars();
 	};
 
 	// Function: "exploreArray"
@@ -72,12 +89,16 @@ var jsonparse = (function() {
 	var exploreArray = function(){
 		next();
 		if (str[at] != '[') { throw "ParseError: Missing the '[' at the beginning of the array. (found '"+str[at]+"' instead)"; };
-		// Looping though the values of the array
-		do {
-			exploreValue[detectNextValue(str, at)](str);
-		} while (str[at] == ',')
-		if (str[at] != ']') { throw "ParseError: Missing the ']' at the end of the array."; };
+		skipChars();
+		if (str[at+1] != ']') { // If the array is not empty...
+			do { // ... we loop though the values of the array
+				skipChars();
+				exploreValue[detectNextValue(str, at)](str);
+			} while (str[at] == ',')
+			if (str[at] != ']') { throw "ParseError: Missing the ']' at the end of the array."; };			
+		} else { next(); };
 		next();
+		skipChars();
 	};
 
 	// Function: "exploreNumber"
@@ -89,8 +110,9 @@ var jsonparse = (function() {
 			throw "ParseError: This is not a valid number:"+ str.slice(at+1,index+1);
 		} else {
 			at = index;
-			next()
+			next();
 		}
+		skipChars();
 	};
 
 	// Function: "exploreBoolean"
@@ -109,12 +131,14 @@ var jsonparse = (function() {
 			default:
 				throw "ParseError: Booleans only start with 't' or 'f'.";
 		}
+		skipChars();
 	};
 
 	// Function: "exploreNull"
 	// ---------------------------
 	var exploreNull = function(){
 		next();
+		skipChars();
 		if (str.slice(at, at+4) == 'null') { next(4); }
 		else { throw "ParseError: '"+str.slice(at, at+4)+"' should be 'null'."; };
 	};
