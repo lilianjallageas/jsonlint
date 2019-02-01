@@ -34,6 +34,7 @@ new Vue({
 		jsonparse.parse('["test_A",{"test_A":"test_A"},null]');
 		jsonparse.parse('[true,false]');
 		jsonparse.parse('[{"test_A":"test_A"},123456,null,false,{"array":[1234,"test"]}]');
+		
 	},
 
 	// Vue Methods

@@ -50,6 +50,7 @@ var jsonparse = (function() {
 		}
 	};
 
+
 	// Function: "exploreObject"
 	// ---------------------------
 	var exploreObject = function(){
@@ -69,6 +70,7 @@ var jsonparse = (function() {
 		skipChars();
 	};
 
+
 	// Function: "exploreString"
 	// ---------------------------
 	var exploreString = function(){
@@ -83,6 +85,7 @@ var jsonparse = (function() {
 		next();
 		skipChars();
 	};
+
 
 	// Function: "exploreArray"
 	// ---------------------------
@@ -101,6 +104,7 @@ var jsonparse = (function() {
 		skipChars();
 	};
 
+
 	// Function: "exploreNumber"
 	// ---------------------------
 	var exploreNumber = function(){
@@ -114,6 +118,7 @@ var jsonparse = (function() {
 		}
 		skipChars();
 	};
+
 
 	// Function: "exploreBoolean"
 	// ---------------------------
@@ -134,6 +139,7 @@ var jsonparse = (function() {
 		skipChars();
 	};
 
+
 	// Function: "exploreNull"
 	// ---------------------------
 	var exploreNull = function(){
@@ -142,6 +148,7 @@ var jsonparse = (function() {
 		if (str.slice(at, at+4) == 'null') { next(4); }
 		else { throw "ParseError: '"+str.slice(at, at+4)+"' should be 'null'."; };
 	};
+
 
 	// Function: "exploreValue"
 	// ---------------------------
@@ -153,6 +160,7 @@ var jsonparse = (function() {
 		'boolean': exploreBoolean,
 		'null': exploreNull,
 	};
+
 
 
 	// ---------------------------
@@ -171,8 +179,17 @@ var jsonparse = (function() {
 				if (at == str.length) { console.log("Successfully parsed the JSON string: " + str); } 
 				else { console.log("ERROR: Something went wrong during the parsing of the JSON string: " + str); };
 			} catch(error){
-				console.log(error);
-				console.log("Error during the parsing of the string: " + inputString);
+				errorAtLine = ((str.slice(0,at).match(/(\r|\n)/g)) || []).length+1;
+				linesArray = str.split(/\r?\n/);
+				var errorAt = at;
+				if (errorAtLine > 1) {
+					var lastNewLineIndex = (str.slice(0,at)).lastIndexOf('\n');
+					errorAt = at - lastNewLineIndex - 1;
+				};
+				console.log("Error during the parsing of the JSON, on line "+ errorAtLine);
+				if(errorAtLine > 1) { console.log(linesArray[errorAtLine-2]); }
+				console.log(linesArray[errorAtLine-1]);
+				console.log(" ".repeat(errorAt)+"↳"+" "+error);
 			}
 		}
 
