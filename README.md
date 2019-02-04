@@ -20,3 +20,6 @@ Then, you can use the library in your javascript code:
 + `var parsedObject = jsonlint.parse('{"123": "456"}');`
 + `var lintedString = jsonlint.toString(parsedObject, "  ");`
 
+### Demo
+
+Click here: https://lilianjallageas.github.io/jsonlint/
