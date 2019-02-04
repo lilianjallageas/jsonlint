@@ -75,7 +75,11 @@ var jsonlint = (function() {
 		// API: "parse"
 		// ---------------------------
 		parse: function(inputString) {
-			return JSON.parse(inputString);
+			try {
+				return JSON.parse(inputString);
+			} catch (error){
+				throw jsonparse.parse(inputString);
+			};
 		},
 
 		// API: "toString"

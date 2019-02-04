@@ -174,10 +174,11 @@ var jsonparse = (function() {
 			console.log("<<<================================");
 			at = -1;
 			str = inputString;
+			var outputString = "";
 			try{
 				exploreValue[detectNextValue(str, at)](str);
-				if (at == str.length) { console.log("Successfully parsed the JSON string: " + str); } 
-				else { console.log("ERROR: Something went wrong during the parsing of the JSON string: " + str); };
+				if (at == str.length) { outputString = "Successfully parsed the JSON string: " + str; } 
+				else { outputString = "ERROR: Something went wrong during the parsing of the JSON string: " + str; };
 			} catch(error){
 				errorAtLine = ((str.slice(0,at).match(/(\r|\n)/g)) || []).length+1;
 				linesArray = str.split(/\r?\n/);
@@ -186,11 +187,13 @@ var jsonparse = (function() {
 					var lastNewLineIndex = (str.slice(0,at)).lastIndexOf('\n');
 					errorAt = at - lastNewLineIndex - 1;
 				};
-				console.log("Error during the parsing of the JSON, on line "+ errorAtLine);
+				outputString = "Error during the parsing of the JSON, on line "+ errorAtLine + "\n";
 				if(errorAtLine > 1) { console.log(linesArray[errorAtLine-2]); }
-				console.log(linesArray[errorAtLine-1]);
-				console.log(" ".repeat(errorAt)+"↳"+" "+error);
+				outputString = linesArray[errorAtLine-1] + "\n";
+				outputString = " ".repeat(errorAt)+"↳"+" "+error;
 			}
+			console.log(outputString);
+			return outputString;
 		}
 
 	}; // end of 'return'
