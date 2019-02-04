@@ -10,6 +10,7 @@ var jsonparse = (function() {
 	// ---------------------------
 	var at = -1;
 	var str = "";
+	var strLength = 0;
 	var skipableChars = [' ','\t','\r','\n'];
 
 
@@ -79,7 +80,8 @@ var jsonparse = (function() {
 		if (str[at] != '"') { throw "ParseError: Missing the '\"' at the beginning of the string."; }
 		next();
 		do {
-			if (['\b','\f','\n','\r','\t','\v','\0','\\','\'','\"'].includes(str.charAt(at))) { throw "ParseError: This character is not allowed in a string: "+str.charAt(at); }
+			if (at == strLength) { throw "ParseError: Missing the '\"' character at the end of the string."; } 
+			else if (['\b','\f','\n','\r','\t','\v','\0','\\','\'','\"'].includes(str.charAt(at))) { throw "ParseError: This character is not allowed in a string: "+str.charAt(at); }
 			else { at++; };
 		} while (str[at] != '"')
 		next();
@@ -174,6 +176,7 @@ var jsonparse = (function() {
 			console.log("<<<================================");
 			at = -1;
 			str = inputString;
+			strLength = inputString.length;
 			var outputString = "";
 			try{
 				exploreValue[detectNextValue(str, at)](str);
