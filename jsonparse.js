@@ -46,8 +46,8 @@ var jsonparse = (function() {
 		else if (nextChar == 'n') { return 'null'; }
 		else if (nextChar == '-' || ['0','1','2','3','4','5','6','7','8','9'].includes(nextChar)) { return 'number'; }
 		else { 
-			console.log("We didn't detect any value for the character '"+str[at+1]+"'");
-			return 'valueNotDetected'; 
+			next();
+			throw "ParseError: We didn't detect any value type for the character '"+str[at]+"'.";
 		}
 	};
 
@@ -65,6 +65,7 @@ var jsonparse = (function() {
 				if (str[at] != ':') { throw "ParseError: Missing ':' between the key and the value of the object."; };
 				exploreValue[detectNextValue(str, at)](str);
 			} while (str[at] == ',')
+			if (str[at] == '"') { throw "ParseError: Missing the ',' between the properties of the object."; };
 			if (str[at] != '}') { throw "ParseError: Missing the '}' at the end of the object."; };
 		} else { next(); };
 		next();
@@ -77,11 +78,11 @@ var jsonparse = (function() {
 	var exploreString = function(){
 		next();
 		skipChars();
-		if (str[at] != '"') { throw "ParseError: Missing the '\"' at the beginning of the string."; }
+		if (str[at] != '"') { throw "ParseError: Missing the \" at the beginning of the string."; }
 		next();
 		do {
-			if (at == strLength) { throw "ParseError: Missing the '\"' character at the end of the string."; } 
-			else if (['\b','\f','\n','\r','\t','\v','\0','\\','\'','\"'].includes(str.charAt(at))) { throw "ParseError: This character is not allowed in a string: "+str.charAt(at); }
+			if (at == strLength) { throw "ParseError: Missing the \" character at the end of the string."; } 
+			else if (['\b','\f','\n','\r','\t','\v','\0','\\','\'','\"'].includes(str.charAt(at))) { throw "ParseError: This character is not allowed in a string."; }
 			else { at++; };
 		} while (str[at] != '"')
 		next();
@@ -113,7 +114,7 @@ var jsonparse = (function() {
 		var index = at;
 		do { index++ } while ((index != str.length-1 && [',', '}', ']'].includes(str[index+1]) == false))
 		if(isNaN(str.slice(at+1,index+1))) {
-			throw "ParseError: This is not a valid number:"+ str.slice(at+1,index+1);
+			throw "ParseError: This is not a valid number: "+ str.slice(at+1,index+1);
 		} else {
 			at = index;
 			next();
@@ -180,8 +181,8 @@ var jsonparse = (function() {
 			var outputString = "";
 			try{
 				exploreValue[detectNextValue(str, at)](str);
-				if (at == str.length) { outputString = "Successfully parsed the JSON string: " + str; } 
-				else { outputString = "ERROR: Something went wrong during the parsing of the JSON string: " + str; };
+				if (at == str.length) { outputString += "Successfully parsed the JSON string: " + str; } 
+				else { outputString += "ERROR: Something went wrong during the parsing of the JSON string: " + str; };
 			} catch(error){
 				errorAtLine = ((str.slice(0,at).match(/(\r|\n)/g)) || []).length+1;
 				linesArray = str.split(/\r?\n/);
@@ -190,10 +191,18 @@ var jsonparse = (function() {
 					var lastNewLineIndex = (str.slice(0,at)).lastIndexOf('\n');
 					errorAt = at - lastNewLineIndex - 1;
 				};
-				outputString = "Error during the parsing of the JSON, on line "+ errorAtLine + "\n";
-				if(errorAtLine > 1) { console.log(linesArray[errorAtLine-2]); }
-				outputString = linesArray[errorAtLine-1] + "\n";
-				outputString = " ".repeat(errorAt)+"↳"+" "+error;
+				outputString += "Error during the parsing of the JSON, on line "+ errorAtLine + " (col "+(errorAt+1)+"):\n";
+				// Cutting the line where the error is located (if necessary)
+				var errorLine = linesArray[errorAtLine-1];
+				if (errorLine.length - errorAt > 20) { // If there are too many characters at the end of the line, we cut it (for display purpose)
+					errorLine = errorLine.substring(0, errorAt + 20) + "...";
+				};
+				if (errorAt > 20) { // If there are too many characters at the beginning of the line, we cut it (for display purpose)
+					errorLine = errorLine.substring(errorAt - 20);
+					errorAt = 20;
+				};
+				outputString += errorLine + "\n";
+				outputString += " ".repeat(errorAt)+"↳"+" "+error;
 			}
 			console.log(outputString);
 			return outputString;
