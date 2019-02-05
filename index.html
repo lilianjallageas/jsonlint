@@ -39,9 +39,6 @@
 						<v-btn color="info" @click="lint()">
 							Lint<v-icon right dark>chevron_right</v-icon>
 						</v-btn>
-						<v-alert :value="parseError" type="error">
-							{{parseError}}	
-						</v-alert>
 					</v-flex>
 
 					<!-- Output -->
@@ -57,6 +54,14 @@
 					</v-flex>
 
 				</v-layout>
+				<v-layout row wrap>
+					<v-flex xs12>
+						<v-alert :value="parseError" type="error">
+							<pre class="text-sm-left">{{parseError}}</pre>
+						</v-alert>
+					</v-flex>
+				</v-layout>
+
 			</v-container>
 		</v-app>
 	</div>

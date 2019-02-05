@@ -43,6 +43,8 @@ new Vue({
 	methods: {
 
 		lint: function() {
+			this.parseError = "";
+			this.outputString = "";
 			try{
 				var parsedObject = jsonlint.parse(this.inputString);
 				this.outputString = jsonlint.toString(parsedObject, this.indentation);				
