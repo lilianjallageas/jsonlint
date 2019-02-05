@@ -2,6 +2,8 @@
 
 This library will allow you to parse and print JSON strings.
 
+Click here for the demo: https://lilianjallageas.github.io/jsonlint/
+
 ### Library API
 
 The 'jsonlint' library exposes the following functions:
@@ -20,6 +22,3 @@ Then, you can use the library in your javascript code:
 + `var parsedObject = jsonlint.parse('{"123": "456"}');`
 + `var lintedString = jsonlint.toString(parsedObject, "  ");`
 
-### Demo
-
-Click here: https://lilianjallageas.github.io/jsonlint/
