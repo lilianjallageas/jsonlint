@@ -23,7 +23,7 @@ new Vue({
 		// jsonparse.parse('{"children": [],"spouse": null, "emptyObject": {} }');
 		// jsonparse.parse('  1234567890  ');
 		// jsonparse.parse('{\n"test_number" : 1234567890\n }');
-		// jsonparse.parse('123e-5');
+		jsonparse.parse('123e-5');
 		// jsonparse.parse('null');
 		// jsonparse.parse('true');
 		// jsonparse.parse('false');
