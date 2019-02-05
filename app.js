@@ -55,6 +55,7 @@ new Vue({
 
 		clearString: function(element) {
 			this[element] = "";
+			document.getElementById(element).focus();
 		},
 
 		copyToClipboard: function() {
