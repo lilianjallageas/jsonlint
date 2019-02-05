@@ -15,6 +15,10 @@ var jsonlint = (function() {
 	// ---------------------------
 	var printObject = function(object, level){
 		if (object === null) { return "null"; };
+		if (typeof object != 'object' || !object) { 
+			if (typeof object == 'string') { return '\"' + object + '\"'; }
+			else return object; 
+		};
 		var outputString = '{';
 		var keys = Object.getOwnPropertyNames(object);
 		for (var i = 0; i < keys.length; i++) { 
@@ -88,7 +92,6 @@ var jsonlint = (function() {
 		// ---------------------------
 		toString: function(object, indentation) {
 			// Checking the parameters
-			if (!object) { return "Please provide a valid javascript object." };
 			if (!indentation) { return "Please indentation."; } else { spacing = indentation; };
 
 			// Printing the javascript object into the JSON format
