@@ -51,6 +51,9 @@
 						<v-btn color="error" @click="clearString('outputString')">
 							Clear<v-icon right dark>delete</v-icon>
 						</v-btn>
+						<v-alert :value="parseSuccess" type="success">
+							The JSON is valid.
+						</v-alert>
 					</v-flex>
 
 				</v-layout>

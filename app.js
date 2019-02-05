@@ -14,6 +14,7 @@ new Vue({
 		outputString: "",
 		indentation: "    ",
 		parseError: "",
+		parseSuccess: false,
 	},
 
 
@@ -22,11 +23,14 @@ new Vue({
 	methods: {
 
 		lint: function() {
+			this.parseSuccess = false;
 			this.parseError = "";
 			this.outputString = "";
+			if (this.inputString.trim() == "") { this.parseError = "Please enter a valid JSON string."; return; };
 			try{
 				var parsedObject = jsonlint.parse(this.inputString);
-				this.outputString = jsonlint.toString(parsedObject, this.indentation);				
+				this.outputString = jsonlint.toString(parsedObject, this.indentation);
+				this.parseSuccess = true;
 			} catch (error) {
 				this.parseError = error;
 			}
@@ -35,6 +39,7 @@ new Vue({
 		clearString: function(element) {
 			this[element] = "";
 			document.getElementById(element).focus();
+			this.parseSuccess = false;
 		},
 
 		copyToClipboard: function() {
